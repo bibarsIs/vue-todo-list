@@ -14,7 +14,7 @@
     <form id="edit" v-on:submit.prevent="doneEdit(todoListItem.text)">
       <input ref="inputEdit" id="inputEdit" type="text" v-model="todoListItemLocal.text" class="form-control shadow-sm"/>
     </form>
-    <button type="submit" form="edit" class="btn btn-secondary mx-3 shadow-sm">Done</button>
+    <button type="submit" form="edit" class="btn btn-secondary mx-3 shadow-sm">Done editing</button>
 
   </div>
 </template>
