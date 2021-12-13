@@ -21,7 +21,7 @@ export default createStore({
                 return o.id !== item.id
             })
         },
-        setTodoListItem(state, id, text) {
+        setTodoListItem(state, {id, text}) {
             const item = state.todoListItems.find(o => o.id === id)
             item.text = text
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container col-lg-6 my-4">
+  <div class="container col-md-6 my-4">
     <h2 class="d-flex justify-content-center">Todo list app</h2>
     <p class="d-flex flex-column align-items-end">Finished tasks {{ finishedTasks }}/{{ totalTasks }}</p>
     <AddTodoListItem></AddTodoListItem>

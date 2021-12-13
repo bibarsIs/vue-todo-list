@@ -4,26 +4,27 @@
       :class="{ 'border-danger': !todoListItem.done }">
     <span>{{ todoListItem.text }}</span>
     <div class="d-flex justify-content-between col-sm-2">
-      <i class="bi bi-pencil-fill" @click="toggleEdit"></i>
+      <i class="bi bi-pencil-fill" @click="editItem"></i>
       <i class="bi bi-trash-fill" @click="deleteItem"></i>
       <i class="bi bi-check-lg" :class="{ 'text-success': todoListItem.done}" @click="toggleDone"></i>
     </div>
   </div>
-<!--  todo-->
+
   <div v-else class="d-flex ">
-    <form id="edit" v-on:submit.prevent="toggleEdit">
-      <input type="text" :value="todoListItem.text" class="form-control shadow-sm">
+    <form id="edit" v-on:submit.prevent="doneEdit(todoListItem.text)">
+      <input ref="inputEdit" id="inputEdit" type="text" v-model="todoListItemLocal.text" class="form-control shadow-sm"/>
     </form>
-    <button type="submit" form="edit" class="btn btn-secondary mx-3 shadow-sm" @click="toggleEdit">Done</button>
+    <button type="submit" form="edit" class="btn btn-secondary mx-3 shadow-sm">Done</button>
 
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex'
-import {ref} from "vue";
+import {nextTick, reactive, ref} from "vue";
 
 export default {
+
   props: {
     todoListItem: {
       type: Object,
@@ -32,28 +33,41 @@ export default {
   },
 
   setup(props) {
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const todoListItem = props.todoListItem
+    const todoListItemLocal = reactive(props.todoListItem)
+
     const store = useStore()
 
+    const inputEdit = ref(null)
+
     function toggleDone() {
-      store.commit('toggleDone', todoListItem.id)
+      store.commit('toggleDone', props.todoListItem.id)
     }
 
     function deleteItem() {
-      store.commit('deleteTodoListItem', todoListItem.id)
+      store.commit('deleteTodoListItem', props.todoListItem.id)
     }
 
     let editing = ref(false)
-    function toggleEdit() {
-      editing.value = !editing.value
+    async function editItem() {
+      editing.value = true
+      await nextTick() //wait next tick for rerender
+      inputEdit.value.focus()
+    }
+    function doneEdit(text) {
+      store.commit('setTodoListItem', {
+        id: props.todoListItem.id,
+        text: text})
+      editing.value = false
     }
 
     return {
       toggleDone,
       deleteItem,
-      toggleEdit,
-      editing
+      editItem,
+      editing,
+      doneEdit,
+      todoListItemLocal,
+      inputEdit
     }
   }
 }
