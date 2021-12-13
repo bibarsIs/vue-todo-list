@@ -1,4 +1,6 @@
 # vue-todo-list
+A simple todo list app. Built using vue 3 composition api, vuex, bootstrap. 
+demo https://vue-todo-list.onrender.com
 
 ![img.png](img.png)
 
